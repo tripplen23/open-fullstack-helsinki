@@ -1,0 +1,1 @@
+This is the repository for submitting the React excercise for Open Fullstack Helsinki.
