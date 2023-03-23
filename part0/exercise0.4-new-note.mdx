@@ -1,14 +1,28 @@
-### Exercise 0.4 new-note 
-More info about this exercise: https://fullstackopen.com/en/part0/fundamentals_of_web_apps  
+sequenceDiagram
+    participant browser
+    participant server
+    participant database
 
-browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note  
-server-->browser: Status Code 302 Found, url redirect  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes  
-server-->browser: HTML code  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css  
-server-->browser: main.css  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js  
-server-->browser: main.js  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json  
-server-->browser: [{content: "HTML is easy",date: "2019-05-23T17:30:31.098Z"},...]  
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+
+    Note right of browser: The browser sends the new note to the server
+
+    server->>database: INSERT INTO notes (content, date) VALUES ("new note", "2023-03-23")
+    activate database
+    database-->>server: success
+    deactivate database
+
+    server-->>browser: HTTP 302 redirect to /exampleapp/notes
+    deactivate server
+
+    Note right of browser: The browser receives the HTTP 302 redirect and follows it
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+
+    Note right of browser: The browser fetches the notes again, including the new note
+
+    server-->>browser: HTML document with the new note
+    deactivate server
 

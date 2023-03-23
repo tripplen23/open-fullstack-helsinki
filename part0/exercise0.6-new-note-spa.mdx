@@ -1,14 +1,25 @@
-### Exercise 0.6 New Note SPA
-More info about this exercise: https://fullstackopen.com/en/part0/fundamentals_of_web_apps  
+sequenceDiagram
+    participant browser
+    participant server
+    participant database
 
-browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa  
+    browser->>browser: The user types a new note into the input field and clicks the "Add" button
 
-note over browser  
-browser sends JSON-data to server in POST request  
-end note  
+    Note right of browser: The JavaScript code sends a POST request to the server
 
-server-->browser: Status Code: 201 Created  
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa { "content": "new note" }
+    activate server
 
-note over browser  
-Event handler renders note to page.  
-end note  
+    Note right of server: The server receives the new note from the client and inserts it into the database
+
+    server->>database: INSERT INTO notes (content, date) VALUES ("new note", "2023-03-23")
+    activate database
+    database-->>server: success
+    deactivate database
+
+    server-->>browser: HTTP 201 created with the new note
+    deactivate server
+
+    Note right of browser: The JavaScript code receives the new note from the server and updates the app with it
+
+    browser->>browser: The JavaScript code updates the app with the new note

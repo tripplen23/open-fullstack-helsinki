@@ -1,11 +1,23 @@
-### Exercise 0.5 Single Page App
-More info about this exercise: https://fullstackopen.com/en/part0/fundamentals_of_web_apps  
+sequenceDiagram
+    participant browser
+    participant server
 
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa  
-server-->browser: HTML code  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css  
-server-->browser: main.css  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js  
-server-->browser: spa.js  
-browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json  
-server-->browser: [{content: "HTML is easy",date: "2019-05-23T17:30:31.098Z"},...]  
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+
+    Note right of browser: The browser requests the single-page app from the server
+
+    server-->>browser: HTML document with JavaScript code
+    deactivate server
+
+    Note right of browser: The browser receives the HTML document with JavaScript code and starts executing it
+
+    browser->>browser: The JavaScript code fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+
+    Note right of browser: The JavaScript code fetches the notes from the server and renders them in the app
+
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    deactivate server
