@@ -1,11 +1,28 @@
-import React, {useState} from "react";
+import React from "react";
+import { useState, useEffect } from "react";
+
+import axios from "axios";
+
 import {ContentForm, Person, Filter} from "./components/ComponentsOutput"
 
-const App = (props) => {
-  const [persons, setPersons] = useState(props.persons) 
+const App = () => {
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+
+  const hook = () => {
+    console.log("Effect")
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log("Promise fulfiled")  
+        console.log(response.data)  
+        setPersons(response.data)  
+      })
+  }
+
+  useEffect(hook, [])
   
   const handleTypeName = (event) => {
     console.log(event.target.value)
