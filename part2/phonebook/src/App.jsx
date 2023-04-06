@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 
 import personService from './services/persons'
 
-import {ContentForm, Person, Filter} from "./components/ComponentsOutput"
+import {ContentForm, Person, Filter, Notification} from "./components/ComponentsOutput"
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+  const [notiMessage, setNotiMessage] = useState(null)
 
   const hook = () => {
     console.log("Effect")
@@ -55,7 +56,12 @@ const App = () => {
             setNewNumber('')
           })
           .catch(error => {
-            alert(`Failed to update ${existingPerson.name}'s number.`)
+            setNotiMessage(
+              `Information of ${existingPerson.name} has already been removed from the server`
+            )
+            setTimeout(() => {
+              setNotiMessage(null);
+            }, 5000)
           })
       }
     }
@@ -75,6 +81,11 @@ const App = () => {
           setPersons(persons.concat(returnedContent))  
           setNewName('') 
           setNewNumber(newNumber)
+          
+          setNotiMessage(`'${newName}' is added successfully!`)
+          setTimeout(() => {
+            setNotiMessage(null)
+          }, 5000)
         })
     }
   }
@@ -96,6 +107,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+        <Notification message={notiMessage}/>
+        <br/>
         <Filter filterName={filterName} handleTypeFilterName={handleTypeFilterName}/>
       <h2>Add a new</h2>
         <div className="content__form">
