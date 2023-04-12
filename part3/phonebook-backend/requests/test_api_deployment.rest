@@ -1,0 +1,13 @@
+GET https://phonebook-exercise.onrender.com/api/persons
+
+###
+POST https://phonebook-exercise.onrender.com/api/persons
+Content-type: application/json
+
+{
+    "name": "Binh Nguyen",
+    "number": "0905134125"
+}
+
+###
+DELETE https://phonebook-exercise.onrender.com/api/persons/2
