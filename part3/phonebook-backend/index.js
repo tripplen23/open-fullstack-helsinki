@@ -1,7 +1,19 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan')
+const cors = require('cors')
 
-app.use(express.json());
+// Creating a new token
+morgan.token('person', (req) => {
+    if (req.method === 'POST') return JSON.stringify(req.body)
+    return null
+})
+
+app.use(cors())
+app.use(express.json()) // json-parser
+app.use(morgan(
+    ':method :url :status :res[content-length] - :response-time ms :person'
+))
 
 let persons = [
     { 
@@ -84,7 +96,6 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-
     const person = {
         id: generateId(),
         name: body.name,
@@ -103,7 +114,7 @@ app.delete("/api/persons/:id", (req,res) => {
     res.status(204).end()
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server is running at port: ${PORT}`)
 })
