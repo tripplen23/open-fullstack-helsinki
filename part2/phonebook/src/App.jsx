@@ -46,7 +46,7 @@ const App = () => {
     const existingNumber = persons.some(person => person.number === newNumber)
 
     if (existingPerson) {
-      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+      if (window.confirm(`${newName} is already added to the phonebook`)) {
         const changedNumber = { ...existingPerson, number: newNumber }
         personService
           .update(existingPerson.id, changedNumber)
@@ -72,7 +72,6 @@ const App = () => {
       const contentObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
 
       personService
