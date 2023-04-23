@@ -46,7 +46,7 @@ const App = () => {
     const existingNumber = persons.some(person => person.number === newNumber)
 
     if (existingPerson) {
-      if (window.confirm(`${newName} is already added to the phonebook`)) {
+      if (window.confirm(`${newName} is already added to the phonebook. \n Do you want to update another number for this person?`)) {
         const changedNumber = { ...existingPerson, number: newNumber }
         personService
           .update(existingPerson.id, changedNumber)
@@ -56,9 +56,7 @@ const App = () => {
             setNewNumber('')
           })
           .catch(error => {
-            setNotiMessage(
-              `Information of ${existingPerson.name} has already been removed from the server`
-            )
+            setNotiMessage(`${error.response.data.error}`)
             setTimeout(() => {
               setNotiMessage(null);
             }, 5000)
@@ -85,6 +83,11 @@ const App = () => {
           setTimeout(() => {
             setNotiMessage(null)
           }, 5000)
+        })
+        .catch(error => {
+          // This is the way to access the error message
+          setNotiMessage(`${error.response.data.error}`)
+          console.log(error.response.data.error)
         })
     }
   }
