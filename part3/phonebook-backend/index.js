@@ -13,7 +13,7 @@ morgan.token('person', (req) => {
 })
 
 app.use(cors())
-// app.use(express.static('build'))
+app.use(express.static('build'))
 app.use(express.json()) // json-parser
 app.use(morgan(
     ':method :url :status :res[content-length] - :response-time ms :person'
