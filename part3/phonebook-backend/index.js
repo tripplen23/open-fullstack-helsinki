@@ -12,16 +12,29 @@ morgan.token('person', (req) => {
     return null
 })
 
-const unknownEndpoint = (req, res) => {
-    res.status(404).send({ error: 'unknown endpoint' })
-}
-
 app.use(cors())
-app.use(express.static('build'))
+// app.use(express.static('build'))
 app.use(express.json()) // json-parser
 app.use(morgan(
     ':method :url :status :res[content-length] - :response-time ms :person'
 ))
+
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: 'unknown endpoint' })
+}
+
+// TODO: Error handler middleware
+const errorHandler = (err, req, res, next) => {
+    console.error(err.message)
+
+    if (err.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id' })
+    } else if (err.name === 'ValidationError') {
+        return res.status(400).send({ error: err.message })
+    }
+
+    next(err)
+}
 
 app.get("/", (req,res) => {
     res.send('<h1>Welcome to phonebook backend</h1>');
@@ -36,7 +49,7 @@ app.get("/api/persons", (req,res) => {
     })
 })
 
-app.get("/api/persons/:id", (req,res) => {
+app.get("/api/persons/:id", (req, res, next) => {
     const { id } = req.params
 
     Person.findById(id)
@@ -48,7 +61,7 @@ app.get("/api/persons/:id", (req,res) => {
             res.status(404).end()
         }
     })
-    .catch((error) => next(error))
+    .catch(err => next(err))
 })
 
 app.get("/info", (req,res) => {
@@ -65,16 +78,16 @@ app.get("/info", (req,res) => {
     })
 })
 
-app.post('/api/persons', (req, res, next) => {
+app.post("/api/persons", (req, res, next) => {
     const { body } = req;
     
-    if (!body.name) {
+    if (body.name === undefined) {
         return res.status(400).json({
             error: 'Name is missing'
         })
     }
 
-    if (!body.number) {
+    if (body.number === undefined) {
         return res.status(400).json({
             error: 'Number is missing'
         })
@@ -89,16 +102,39 @@ app.post('/api/persons', (req, res, next) => {
     .then(savedPerson => {
         res.json(savedPerson.toJSON())
     })
-    .catch((error) => next(error))
+    .catch((err) => next(err))
 })
 
-app.delete("/api/persons/:id", (req,res) => {
-    const id = Number(req.params.id)
-    people = Person.filter(person => person.id !== id)
-    res.status(204).end()
+app.delete("/api/persons/:id", (req,res, next) => {
+    Person.findByIdAndRemove(req.params.id)
+    .then(result => {
+        res.status(204).end()
+    })
+    .catch(err => next(err))
+})
+
+app.put("/api/persons/:id", (req, res, next) => {
+    const { id } = req.params
+    const { body } = req
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(id, person, { new: true, runValidators: true })
+    .then(updatedPerson => {
+        if (updatedPerson) {
+            res.json(updatedPerson.toJSON())
+        } else {
+            res.status(404).end()
+        }
+    })
+    .catch(err => next(err))
 })
 
 app.use(unknownEndpoint)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {

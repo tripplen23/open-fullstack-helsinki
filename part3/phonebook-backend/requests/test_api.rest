@@ -1,6 +1,11 @@
+
+### GET LIST OF PEOPLE IN THE PHONEBOOK
 GET http://localhost:3001/api/persons
 
-###
+### GET A SPECIFIC PERSON INFO FROM THE PHONEBOOK
+GET http://localhost:3001/api/persons/6436bff413a632e599cb4a92
+
+### POST A PERSON IN TO THE PHONEBOOK
 POST http://localhost:3001/api/persons
 Content-type: application/json
 
@@ -9,5 +14,14 @@ Content-type: application/json
     "number": "0905134125"
 }
 
-###
+### DELETE A PERSON IN THE PHONEBOOK
 DELETE http://localhost:3001/api/persons/2
+
+### UPDATE A PERSON'S NUMBER IN THE PHONEBOOK 
+PUT http://localhost:3001/api/persons/6436bff413a632e599cb4a92
+Content-type: application/json
+
+{
+    "name": "Binh Nguyen",
+    "number": "090-6 9595 27"
+}
