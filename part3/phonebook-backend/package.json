@@ -13,7 +13,7 @@
     "build:ui": "rm -rf build && cd ../../part2/phonebook && yarn build && cp -r build ../../part3/phonebook-backend",
     "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push",
     "lint": "eslint .",
-    "format": "prettier --single-quote --write \"**/*.js\" \"**/*.json\""
+    "format": "prettier --write \"**/*.js\" \"**/*.json\""
   },
   "author": "Binh Nguyen",
   "license": "MIT",
