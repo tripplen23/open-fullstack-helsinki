@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node ./src/index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../../part2/phonebook && yarn build && cp -r build ../../part3/phonebook-backend",
     "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push",
@@ -27,7 +27,6 @@
   "devDependencies": {
     "eslint": "^8.39.0",
     "nodemon": "^2.0.22",
-    "prettier": "^2.8.8",
-    "prettier-eslint": "^15.0.1"
+    "prettier": "^2.8.8"
   }
 }

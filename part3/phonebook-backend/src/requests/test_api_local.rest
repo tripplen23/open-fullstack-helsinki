@@ -1,14 +1,15 @@
+
 ### TODO: GET LIST OF PEOPLE IN THE PHONEBOOK (200)
-GET https://phonebook-exercise.onrender.com/api/persons
+GET http://localhost:3001/api/persons
 
 ### TODO: GET A SPECIFIC PERSON INFO FROM THE PHONEBOOK (200)
-GET https://phonebook-exercise.onrender.com/api/persons/6436c0d9e40c19c32430348c
+GET http://localhost:3001/api/persons/6436c0d9e40c19c32430348c
 
 ### TODO: GET A SPECIFIC PERSON INFO FROM THE PHONEBOOK (404) - not found
-GET https://phonebook-exercise.onrender.com/api/persons/6436bff413a632e599cb4a92
+GET http://localhost:3001/api/persons/6436bff413a632e599cb4a92
 
 ### TODO: POST A PERSON IN TO THE PHONEBOOK (200)
-POST https://phonebook-exercise.onrender.com/api/persons
+POST http://localhost:3001/api/persons
 Content-type: application/json
 
 {
@@ -17,7 +18,7 @@ Content-type: application/json
 }
 
 ### TODO: POST A PERSON IN TO THE PHONEBOOK (400) - invalid phone number
-POST https://phonebook-exercise.onrender.com/api/persons
+POST http://localhost:3001/api/persons
 Content-type: application/json
 
 {
@@ -26,13 +27,13 @@ Content-type: application/json
 }
 
 ### TODO: DELETE A PERSON IN THE PHONEBOOK (200)
-DELETE https://phonebook-exercise.onrender.com/api/persons/6436c0d9e40c19c32430348c
+DELETE http://localhost:3001/api/persons/2
 
 ### TODO: DELETE A PERSON IN THE PHONEBOOK (400) - malformatted id
-DELETE https://phonebook-exercise.onrender.com/api/persons/2
+DELETE http://localhost:3001/api/persons/2
 
 ### TODO: UPDATE A PERSON'S NUMBER IN THE PHONEBOOK (200)
-PUT https://phonebook-exercise.onrender.com/api/persons/64460089bfa67364f2c0d7b6
+PUT http://localhost:3001/api/persons/64460089bfa67364f2c0d7b6
 Content-type: application/json
 
 {
@@ -41,7 +42,7 @@ Content-type: application/json
 }
 
 ### TODO: UPDATE A PERSON'S NUMBER IN THE PHONEBOOK (200)
-PUT https://phonebook-exercise.onrender.com/api/persons/64460089bfa67364f2c0d7b6
+PUT http://localhost:3001/api/persons/64460089bfa67364f2c0d7b6
 Content-type: application/json
 
 {
@@ -50,7 +51,7 @@ Content-type: application/json
 }
 
 ### TODO: UPDATE A PERSON'S NUMBER IN THE PHONEBOOK (400)
-PUT https://phonebook-exercise.onrender.com/api/persons/64460089bfa67364f2c0d7b6
+PUT http://localhost:3001/api/persons/64460089bfa67364f2c0d7b6
 Content-type: application/json
 
 {
