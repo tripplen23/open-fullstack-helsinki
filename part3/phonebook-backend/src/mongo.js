@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
-    console.log("Give password as argument")
-    process.exit(1)
+  console.log('Give password as argument')
+  process.exit(1)
 }
 
 const password = process.argv[2]
@@ -13,17 +13,17 @@ mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+  name: String,
+  number: String,
 })
 
 const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length === 3) {
   // If only password is provided, print all persons in phonebook
-  Person.find({}).then(persons => {
+  Person.find({}).then((persons) => {
     console.log('phonebook:')
-    persons.forEach(person => {
+    persons.forEach((person) => {
       console.log(`${person.name} ${person.number}`)
     })
     mongoose.connection.close()
@@ -32,10 +32,10 @@ if (process.argv.length === 3) {
   // If name and number are provided, add new person to phonebook
   const person = new Person({
     name: process.argv[3],
-    number: process.argv[4]
+    number: process.argv[4],
   })
 
-  person.save().then(result => {
+  person.save().then(() => {
     console.log(`Added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
   })

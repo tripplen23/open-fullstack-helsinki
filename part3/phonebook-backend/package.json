@@ -7,11 +7,13 @@
     "node": ">=14.20.1"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./src/index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../../part2/phonebook && yarn build && cp -r build ../../part3/phonebook-backend",
-    "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push"
+    "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push",
+    "lint": "eslint .",
+    "format": "prettier --single-quote --write \"**/*.js\" \"**/*.json\""
   },
   "author": "Binh Nguyen",
   "license": "MIT",
@@ -23,6 +25,9 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "eslint": "^8.39.0",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
+    "prettier-eslint": "^15.0.1"
   }
 }
