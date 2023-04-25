@@ -1,0 +1,14 @@
+### TODO: GET all blogs
+GET http://localhost:3003/api/blogs
+
+
+### TODO: POST a blog
+POST http://localhost:3003/api/blogs
+Content-type: application/json
+
+{
+    "title": "Eslint in a nutshell",               
+    "author": "Open Fullstack",
+    "url": "https://fullstackopen.com/en/part3/validation_and_es_lint#lint",
+    "likes": 2           
+}
