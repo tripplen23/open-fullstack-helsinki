@@ -10,7 +10,7 @@ blogsRouter.get('/', (request, response) => {
 blogsRouter.post('/', (request, response, next) => {
   const body = request.body
 
-  const blog = new Blog ({
+  const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
