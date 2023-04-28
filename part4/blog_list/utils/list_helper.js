@@ -13,14 +13,14 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  if(blogs.length === 0) {
+  if (blogs.length === 0) {
     return null
   }
 
   let maxLikes = -1
   let favorite = null
 
-  for ( let i = 0; i < blogs.length; i++) {
+  for (let i = 0; i < blogs.length; i++) {
     if (blogs[i].likes > maxLikes) {
       maxLikes = blogs[i].likes
       favorite = blogs[i]
@@ -40,18 +40,21 @@ const mostBlogs = (blogs) => {
     return null
   }
   /*
-  * Using the countBy method from the Lodash library,
-  * the function creates an object blogCountByAuthor
-  * that counts the number of blogs written by each author.
-  */
+   * Using the countBy method from the Lodash library,
+   * the function creates an object blogCountByAuthor
+   * that counts the number of blogs written by each author.
+   */
   const blogCountByAuthor = _.countBy(blogs, 'author')
 
   // TODO: The maxBy method from Lodash library finds the author with the most blog posts
-  const topAuthor = _.maxBy(_.keys(blogCountByAuthor), (author) => blogCountByAuthor[author])
+  const topAuthor = _.maxBy(
+    _.keys(blogCountByAuthor),
+    (author) => blogCountByAuthor[author]
+  )
 
   return {
     author: topAuthor,
-    blogs: blogCountByAuthor[topAuthor]
+    blogs: blogCountByAuthor[topAuthor],
   }
 }
 
@@ -77,11 +80,13 @@ const mostLikes = (blogs) => {
   }
 
   // TODO: finds the author with the most total likes
-  const topAuthor = Object.keys(likesByAuthor).reduce((a, b) => likesByAuthor[a] > likesByAuthor[b] ? a : b)
+  const topAuthor = Object.keys(likesByAuthor).reduce((a, b) =>
+    likesByAuthor[a] > likesByAuthor[b] ? a : b
+  )
 
   return {
     author: topAuthor,
-    likes: likesByAuthor[topAuthor]
+    likes: likesByAuthor[topAuthor],
   }
 }
 
@@ -92,5 +97,3 @@ module.exports = {
   mostBlogs,
   mostLikes,
 }
-
-
