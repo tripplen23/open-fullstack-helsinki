@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import Blogs from "./components/Blog";
 import LoginForm from "./components/LoginForm";
+import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("");
   const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -45,49 +43,20 @@ const App = () => {
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
     } catch (exception) {
-      setMessage("Wrong Credentials");
+      setMessage("Error login: " + exception.message);
     }
   };
 
-  const addBlog = (event) => {
-    event.preventDefault();
-    const blogObject = {
-      title: newBlog,
-      author: newAuthor,
-      url: newUrl,
-    };
+  const createBlog = async (title, author, url) => {
+    try {
+      const blog = await blogService.create({ title, author, url });
 
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
-      setNewBlog("");
-      setNewAuthor("");
-      setNewUrl("");
-    });
+      setBlogs(blogs.concat(blog));
+      setMessage(`A new blog ${title} by ${author} added`);
+    } catch (exception) {
+      setMessage("Error creating blog: " + exception.message);
+    }
   };
-
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value);
-  };
-
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value);
-  };
-
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value);
-  };
-
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      Title: <input value={newBlog} onChange={handleBlogChange} />
-      <br />
-      Author: <input value={newAuthor} onChange={handleAuthorChange} />
-      <br />
-      Url: <input value={newUrl} onChange={handleUrlChange} />
-      <br />
-      <button type="submit">save</button>
-    </form>
-  );
 
   const handleLogout = () => {
     window.localStorage.clear();
@@ -106,7 +75,7 @@ const App = () => {
             <span className="active-user">{user.name}</span> logged in{" "}
             <button onClick={handleLogout}>Logout</button>
           </p>
-          {blogForm()}
+          <BlogForm createBlog={createBlog} />
           <Blogs blogs={blogs} />
         </div>
       )}
