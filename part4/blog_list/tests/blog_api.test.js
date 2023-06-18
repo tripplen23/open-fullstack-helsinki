@@ -86,7 +86,7 @@ describe('Addition of a new blog', () => {
       .post('/api/login')
       .send({
         username: 'root',
-        password: 'sekret'
+        password: 'sekret',
       })
       .then((response) => {
         return (token = response.body.token)
@@ -100,7 +100,7 @@ describe('Addition of a new blog', () => {
       title: 'Python is amazing',
       author: 'Binh Nguyen',
       url: 'https://github.com',
-      likes: 2
+      likes: 2,
     }
 
     await api
@@ -218,7 +218,7 @@ describe('Deletion of a blog', () => {
       .post('/api/login')
       .send({
         username: 'root',
-        password: 'sekret'
+        password: 'sekret',
       })
       .then((response) => {
         return (token = response.body.token)
