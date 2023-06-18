@@ -71,6 +71,19 @@ const App = () => {
     }
   };
 
+  // TODO: Handle update like when user click on the like button.
+  const updateLikes = async (id, updatedBlog) => {
+    try {
+      const response = await blogService.update(id, updatedBlog);
+
+      setBlogs(
+        blogs.map((blog) => (blog.id === response.id ? response : blog))
+      );
+    } catch (exception) {
+      setMessage("Error" + exception.response.data.error);
+    }
+  };
+
   // TODO: A way to log out the current session, this way is supposed to clear every session in the local storage. There is an another way is: window.localStorage.removeItem('loggedNoteappUser')
   const handleLogout = () => {
     window.localStorage.clear();
@@ -98,7 +111,7 @@ const App = () => {
           </Togglable>
 
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
           ))}
         </div>
       )}
