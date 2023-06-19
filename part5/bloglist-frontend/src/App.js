@@ -84,6 +84,20 @@ const App = () => {
     }
   };
 
+  //TODO: Handle the delete blog button
+  const deleteBlog = async (blogId) => {
+    console.log("Blog deleted");
+    try {
+      await blogService.remove(blogId);
+
+      const updatedBlogs = blogs.filter((blog) => blog.id !== blogId);
+      setBlogs(updatedBlogs);
+      setMessage("Blog deleted");
+    } catch (exception) {
+      setMessage("error" + exception.response.data.error);
+    }
+  };
+
   // TODO: A way to log out the current session, this way is supposed to clear every session in the local storage. There is an another way is: window.localStorage.removeItem('loggedNoteappUser')
   const handleLogout = () => {
     window.localStorage.clear();
@@ -114,7 +128,12 @@ const App = () => {
             // Sort the blogs by the number of likes.
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                updateLikes={updateLikes}
+                deleteBlog={deleteBlog}
+              />
             ))}
         </div>
       )}
