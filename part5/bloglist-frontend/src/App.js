@@ -6,6 +6,7 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import userService from "./services/users";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -64,7 +65,8 @@ const App = () => {
         author,
         url,
       });
-      setBlogs(blogs.concat(blog));
+      const user = await userService.getUser(blog.user);
+      setBlogs(blogs.concat({ ...blog, name: user.name }));
       setMessage(`A new blog ${title} by ${author} added`);
     } catch (exception) {
       setMessage("Error creating blog: " + exception.message);
@@ -72,13 +74,15 @@ const App = () => {
   };
 
   // TODO: Handle update like when user click on the like button.
-  const updateLikes = async (id, updatedBlog) => {
+  const updateLikes = async (id, blogToUpdate) => {
     try {
-      const response = await blogService.update(id, updatedBlog);
+      await blogService.update(id, blogToUpdate);
 
-      setBlogs(
-        blogs.map((blog) => (blog.id === response.id ? response : blog))
+      const newBlogs = blogs.map((blog) =>
+        blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog
       );
+
+      setBlogs(newBlogs);
     } catch (exception) {
       setMessage("Error" + exception.response.data.error);
     }
@@ -86,13 +90,12 @@ const App = () => {
 
   //TODO: Handle the delete blog button
   const deleteBlog = async (blogId) => {
-    console.log("Blog deleted");
     try {
       await blogService.remove(blogId);
 
       const updatedBlogs = blogs.filter((blog) => blog.id !== blogId);
       setBlogs(updatedBlogs);
-      setMessage("Blog deleted");
+      setMessage("Blog removed");
     } catch (exception) {
       setMessage("error" + exception.response.data.error);
     }
