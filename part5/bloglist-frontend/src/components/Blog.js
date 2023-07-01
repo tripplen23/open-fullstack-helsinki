@@ -1,12 +1,13 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
+import React from 'react';
+import { useState } from 'react';
+import blogService from '../services/blogs';
 
 const Blog = ({ blog, updateLikes, deleteBlog }) => {
   // Style the blog
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   };
@@ -40,25 +41,27 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title}{" "}
-        <button onClick={toggleVisibility}>{visible ? "hide" : "show"}</button>
+        <span className='title'>{blog.title} - </span>
+        <span className='author'>{blog.author}</span>
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
       </div>
+
+      {/* Children prop */}
       {visible && (
-        <div>
-          <div>{blog.author}</div>
+        <div className='blog-details'>
           <div>{blog.url}</div>
           <div>
-            likes: {blog.likes}
-            <button className="like-btn" onClick={handleLike}>
+            likes: {blog.likes}{' '}
+            <button className='like-btn' onClick={handleLike}>
               like
-            </button>{" "}
+            </button>{' '}
           </div>
           {/* 5.8 Indicating the User information */}
           <div>
-            User: {blog.user.name} {blog.user.id}
+            User: {blog.user.name} - UserID: {blog.user.id}
           </div>
           {(blog.user.id === userId || blog.user === userId) && (
-            <button className="delete-btn" onClick={handleDelete}>
+            <button className='delete-btn' onClick={handleDelete}>
               Delete
             </button>
           )}

@@ -1,15 +1,16 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const LoginForm = ({ handleLogin }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = (event) => {
     event.preventDefault();
     handleLogin(username, password);
-    setUsername("");
-    setPassword("");
+    setUsername('');
+    setPassword('');
   };
 
   return (
@@ -17,22 +18,22 @@ const LoginForm = ({ handleLogin }) => {
       <div>
         username
         <input
-          type="text"
+          type='text'
           value={username}
-          name="Username"
+          name='Username'
           onChange={({ target }) => setUsername(target.value)}
         />
       </div>
       <div>
         password
         <input
-          type="password"
+          type='password'
           value={password}
-          name="Password"
+          name='Password'
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type='submit'>Login</button>
     </form>
   );
 };

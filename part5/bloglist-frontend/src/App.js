@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import LoginForm from "./components/LoginForm";
-import BlogForm from "./components/BlogForm";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import userService from "./services/users";
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Blog from './components/Blog';
+import LoginForm from './components/LoginForm';
+import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
+import Togglable from './components/Togglable';
+import blogService from './services/blogs';
+import loginService from './services/login';
+import userService from './services/users';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -29,7 +30,7 @@ const App = () => {
 
   // TODO: The effect of when User login successfullly, the blogService will set a unique token for this user as well as set the user state of the app as this user logged in.
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
@@ -49,10 +50,10 @@ const App = () => {
       });
 
       // TODO: For saving the user token into the app local storage -> The login session will be saved even after refreshing the app.
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       setUser(user);
     } catch (exception) {
-      setMessage("Error login: " + exception.response.data.error);
+      setMessage('Error login: ' + exception.response.data.error);
     }
   };
 
@@ -69,7 +70,7 @@ const App = () => {
       setBlogs(blogs.concat({ ...blog, name: user.name }));
       setMessage(`A new blog ${title} by ${author} added`);
     } catch (exception) {
-      setMessage("Error creating blog: " + exception.message);
+      setMessage('Error creating blog: ' + exception.message);
     }
   };
 
@@ -84,7 +85,7 @@ const App = () => {
 
       setBlogs(newBlogs);
     } catch (exception) {
-      setMessage("Error" + exception.response.data.error);
+      setMessage('Error' + exception.response.data.error);
     }
   };
 
@@ -95,9 +96,9 @@ const App = () => {
 
       const updatedBlogs = blogs.filter((blog) => blog.id !== blogId);
       setBlogs(updatedBlogs);
-      setMessage("Blog removed");
+      setMessage('Blog removed');
     } catch (exception) {
-      setMessage("error" + exception.response.data.error);
+      setMessage('error' + exception.response.data.error);
     }
   };
 
@@ -109,7 +110,7 @@ const App = () => {
 
   return (
     <div>
-      <h1 className="title">Blogs</h1>
+      <h1 className='header-title'>Blogs</h1>
       {/* Notifications */}
       <Notification message={message} />
 
@@ -119,11 +120,14 @@ const App = () => {
       ) : (
         <div>
           <p>
-            <span className="active-user">{user.name}</span> logged in{" "}
-            <button onClick={handleLogout}>Logout</button>
+            <span className='active-user'>{user.name}</span>
+            logged in{' '}
+            <button className='logout-btn' onClick={handleLogout}>
+              Logout
+            </button>
           </p>
           {/* Toggle the display of blogForm */}
-          <Togglable buttonLable="Add blog" ref={blogFormRef}>
+          <Togglable buttonLable='Add blog' ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
 

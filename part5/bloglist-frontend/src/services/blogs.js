@@ -1,6 +1,6 @@
-import axios from "axios";
-import jwt from "jwt-decode";
-const baseUrl = "/api/blogs";
+import axios from 'axios';
+import jwt from 'jwt-decode';
+const baseUrl = '/api/blogs';
 
 let token = null;
 
@@ -40,5 +40,4 @@ const remove = async (id) => {
   return response.data;
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, create, update, setToken, getUserId, remove };

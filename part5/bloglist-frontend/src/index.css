@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
 * {
-  font-family: "Noto Sans", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 button {
@@ -25,6 +25,16 @@ button {
   color: red;
 }
 
+.header-title,
 .success {
   color: green;
+}
+
+.like-btn {
+  background-color: rgb(68, 0, 255);
+}
+
+.logout-btn,
+.delete-btn {
+  background-color: rgb(233, 44, 60);
 }
