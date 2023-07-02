@@ -43,7 +43,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
       <div>
         <span className='title'>{blog.title} - </span>
         <span className='author'>{blog.author}</span>
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
+        <button className='view-btn' onClick={toggleVisibility}>
+          {visible ? 'hide' : 'show'}
+        </button>
       </div>
 
       {/* Children prop */}
