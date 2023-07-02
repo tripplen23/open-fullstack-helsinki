@@ -17,8 +17,11 @@ describe('<Blog />', () => {
   };
 
   let component;
+  const mockLikesHandler = jest.fn();
   beforeEach(() => {
-    component = render(<Blog key={blog.id} blog={blog} />);
+    component = render(
+      <Blog key={blog.id} blog={blog} updateLikes={mockLikesHandler} />
+    );
   });
 
   test('Rendering title and author of each post but not url or likes by default', () => {
@@ -42,5 +45,16 @@ describe('<Blog />', () => {
     expect(component.queryByText('like')).toBeInTheDocument();
 
     screen.debug();
+  });
+
+  test('If the like button is clicked twice, the event handler is called twice', async () => {
+    const viewButton = component.queryByText('show');
+    await userEvent.click(viewButton);
+
+    const likeButton = component.container.querySelector('.like-btn');
+    await userEvent.click(likeButton);
+    await userEvent.click(likeButton);
+
+    expect(mockLikesHandler.mock.calls).toHaveLength(2);
   });
 });
