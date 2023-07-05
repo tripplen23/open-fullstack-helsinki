@@ -91,6 +91,29 @@ describe('Blog app', function () {
         cy.get('.success')
           .should('have.css', 'color', 'rgb(0, 128, 0)')
           .and('have.css', 'border-style', 'solid');
+        cy.get('html').should('not.contain', 'another blog cypress 3');
+      });
+
+      // 5.22
+      it(' Another user cannot see the delete button', function () {
+        cy.contains('Logout').click();
+        cy.login({ username: 'Binh', password: '123123' });
+        cy.contains('show').click();
+        cy.should('not.contain', 'delete');
+      });
+
+      // 5.23
+      it.only(' Checks that the blogs are ordered according to likes with the blog with the most likes being first.', function () {
+        cy.contains('another blog cypress 3').parent().find('button').click();
+        cy.get('#like-btn').click().wait(500).click().wait(500);
+        cy.contains('another blog cypress 3').parent().find('button').click();
+
+        cy.contains('another blog cypress 1').parent().find('button').click();
+        cy.get('#like-btn').click().wait(500).click().wait(500).click();
+
+        cy.get('.blog').eq(0).should('contain', 'another blog cypress 1');
+        cy.get('.blog').eq(1).should('contain', 'another blog cypress 3');
+        cy.get('.blog').eq(2).should('contain', 'another blog cypress 2');
       });
     });
   });
