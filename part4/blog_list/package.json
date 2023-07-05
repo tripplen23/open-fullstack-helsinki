@@ -9,7 +9,8 @@
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint .",
-    "format": "prettier --write \"**/*.js\" \"**/*.json\""
+    "format": "prettier --write \"**/*.js\" \"**/*.json\"",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -18,6 +17,7 @@ const LoginForm = ({ handleLogin }) => {
       <div>
         username
         <input
+          id='username'
           type='text'
           value={username}
           name='Username'
@@ -27,13 +27,16 @@ const LoginForm = ({ handleLogin }) => {
       <div>
         password
         <input
+          id='password'
           type='password'
           value={password}
           name='Password'
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type='submit'>Login</button>
+      <button id='login-btn' type='submit'>
+        Login
+      </button>
     </form>
   );
 };

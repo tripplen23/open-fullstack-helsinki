@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import blogService from '../services/blogs';
 
-const Blog = ({ blog, updateLikes, deleteBlog }) => {
+const Blog = ({ blog, updateLikes, deleteBlog, username }) => {
   // Style the blog
   const blogStyle = {
     paddingTop: 10,
@@ -11,7 +11,6 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
-
   const [visible, setVisible] = useState(false);
 
   const userId = blogService.getUserId();
@@ -26,7 +25,6 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
       author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
-      user: blog.user.id,
     };
     updateLikes(blog.id, blogToUpdate);
   };
@@ -39,11 +37,11 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
         <span className='title'>{blog.title} - </span>
         <span className='author'>{blog.author}</span>
-        <button className='view-btn' onClick={toggleVisibility}>
+        <button id='view-btn' onClick={toggleVisibility}>
           {visible ? 'hide' : 'show'}
         </button>
       </div>
@@ -54,16 +52,15 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
           <div>{blog.url}</div>
           <div>
             likes: {blog.likes}{' '}
-            <button className='like-btn' onClick={handleLike}>
+            <button id='like-btn' onClick={handleLike}>
               like
             </button>{' '}
           </div>
           {/* 5.8 Indicating the User information */}
-          <div>
-            User: {blog.user.name} - UserID: {blog.user.id}
-          </div>
-          {(blog.user.id === userId || blog.user === userId) && (
-            <button className='delete-btn' onClick={handleDelete}>
+          <div>UserID: {userId}</div>
+          <div>UserName: {username}</div>
+          {blog.user === userId && blog.user.username === username && (
+            <button id='delete-btn' onClick={handleDelete}>
               Delete
             </button>
           )}

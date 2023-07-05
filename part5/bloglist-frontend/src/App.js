@@ -7,7 +7,6 @@ import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
-import userService from './services/users';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -38,10 +37,6 @@ const App = () => {
     }
   }, []);
 
-  // TODO: Acting as a reference to the component
-  // TODO: Ensures the same reference that is kept throughout re-renders of the component.
-  const blogFormRef = useRef();
-
   const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
@@ -66,8 +61,7 @@ const App = () => {
         author,
         url,
       });
-      const user = await userService.getUser(blog.user);
-      setBlogs(blogs.concat({ ...blog, name: user.name }));
+      setBlogs(blogs.concat(blog));
       setMessage(`A new blog ${title} by ${author} added`);
     } catch (exception) {
       setMessage('Error creating blog: ' + exception.message);
@@ -77,15 +71,13 @@ const App = () => {
   // TODO: Handle update like when user click on the like button.
   const updateLikes = async (id, blogToUpdate) => {
     try {
-      await blogService.update(id, blogToUpdate);
-
+      const updatedBlog = await blogService.update(id, blogToUpdate);
       const newBlogs = blogs.map((blog) =>
-        blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog
+        blog.id === id ? updatedBlog : blog
       );
-
       setBlogs(newBlogs);
     } catch (exception) {
-      setMessage('Error' + exception.response.data.error);
+      setMessage('Error update likes: ' + exception.response.data.error);
     }
   };
 
@@ -93,7 +85,6 @@ const App = () => {
   const deleteBlog = async (blogId) => {
     try {
       await blogService.remove(blogId);
-
       const updatedBlogs = blogs.filter((blog) => blog.id !== blogId);
       setBlogs(updatedBlogs);
       setMessage('Blog removed');
@@ -101,6 +92,10 @@ const App = () => {
       setMessage('error' + exception.response.data.error);
     }
   };
+
+  // TODO: Acting as a reference to the component
+  // TODO: Ensures the same reference that is kept throughout re-renders of the component.
+  const blogFormRef = useRef();
 
   // TODO: A way to log out the current session, this way is supposed to clear every session in the local storage. There is an another way is: window.localStorage.removeItem('loggedNoteappUser')
   const handleLogout = () => {
@@ -120,14 +115,14 @@ const App = () => {
       ) : (
         <div>
           <p>
-            <span className='active-user'>{user.name}</span>
+            <span className='active-user'>{user.name} </span>
             logged in{' '}
-            <button className='logout-btn' onClick={handleLogout}>
+            <button id='logout-btn' onClick={handleLogout}>
               Logout
             </button>
           </p>
           {/* Toggle the display of blogForm */}
-          <Togglable buttonLable='Add blog' ref={blogFormRef}>
+          <Togglable buttonLabel='new blog' ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
 
@@ -140,6 +135,7 @@ const App = () => {
                 blog={blog}
                 updateLikes={updateLikes}
                 deleteBlog={deleteBlog}
+                username={blog.user.name}
               />
             ))}
         </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,7 +7,7 @@ const Togglable = forwardRef((props, refs) => {
   const hideWhenVisible = { display: visible ? 'none' : '' };
   const showWhenVisible = { display: visible ? '' : 'none' };
 
-  // TODO: On/Off the visibility of the login (toggle)
+  // TODO: On/Off the visibility function (toggle)
   const toggleVisibility = () => {
     setVisible(!visible);
   };
@@ -24,14 +23,14 @@ const Togglable = forwardRef((props, refs) => {
     <div>
       {/*TODO: UI When visible = false*/}
       <div style={hideWhenVisible}>
-        <button className='new-blog-btn' onClick={toggleVisibility}>
-          {props.buttonLable}
+        <button id='new-blog-btn' onClick={toggleVisibility}>
+          {props.buttonLabel}
         </button>
       </div>
-      {/*TODO: UI When visible = true*/}
+      {/*TODO: Display detail in UI When visible = true*/}
       <div style={showWhenVisible}>
         {props.children}
-        <button className='new-blog-btn' onClick={toggleVisibility}>
+        <button id='cancel-btn' onClick={toggleVisibility}>
           Cancel
         </button>
       </div>
