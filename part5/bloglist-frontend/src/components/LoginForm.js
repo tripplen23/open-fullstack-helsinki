@@ -14,7 +14,7 @@ const LoginForm = ({ handleLogin }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div>
+      <div className='loginForm'>
         username
         <input
           id='username'

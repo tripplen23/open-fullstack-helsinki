@@ -14,6 +14,7 @@ describe('Blog app', function () {
   it('front page can be opened', function () {
     cy.contains('Blogs');
   });
-
-
+  it('Login form is shown', function () {
+    cy.get('.loginForm').should('exist');
+  });
 });
