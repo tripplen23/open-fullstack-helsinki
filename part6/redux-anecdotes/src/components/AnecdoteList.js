@@ -19,19 +19,19 @@ const AnecdoteList = () => {
     dispatch(addVote(id));
   };
 
+  const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes);
+
   return (
     <div>
-      {anecdotes
-        .sort((a, b) => b.votes - a.votes)
-        .map((anecdote) => (
-          <div key={anecdote.id}>
-            <div>{anecdote.content}</div>
-            <div>
-              has {anecdote.votes}
-              <button onClick={() => handleAddVote(anecdote.id)}>vote</button>
-            </div>
+      {sortedAnecdotes.map((anecdote) => (
+        <div key={anecdote.id}>
+          <div>{anecdote.content}</div>
+          <div>
+            has {anecdote.votes}
+            <button onClick={() => handleAddVote(anecdote.id)}>vote</button>
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };
