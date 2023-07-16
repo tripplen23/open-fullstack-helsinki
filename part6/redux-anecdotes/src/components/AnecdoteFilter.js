@@ -1,4 +1,4 @@
-import { setFilter } from "../actions/filterActions";
+import { setFilter } from "../reducers/filterReducer";
 import { useDispatch } from "react-redux";
 
 const AnecdoteFilter = () => {
@@ -14,7 +14,7 @@ const AnecdoteFilter = () => {
 
   return (
     <div style={style}>
-      filter <input onChange={handleChange} />
+      Filter Anecdotes <input onChange={handleChange} />
     </div>
   );
 };
