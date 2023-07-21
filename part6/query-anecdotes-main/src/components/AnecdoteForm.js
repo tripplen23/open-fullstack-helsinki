@@ -23,7 +23,10 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
     if (content.length < 5) {
-      alert("Anecdote must be at least 5 characters long.");
+      dispatch({
+        type: "SHOW_NOTIFICATION",
+        payload: { message: "Too short anecdote, must have length 5 or more" },
+      });
       return;
     }
     newAnecdoteMutation.mutate({ content, votes: 0 });
