@@ -2,7 +2,6 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import About from "./components/About";
 import CreateNew from "./components/CreateNew";
-import Menu from "./components/Menu";
 import AnecdoteList from "./components/AnecdoteList";
 import Footer from "./components/Footer";
 
