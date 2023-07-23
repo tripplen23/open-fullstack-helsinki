@@ -27,16 +27,24 @@ const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input {...content} />
+          Content
+          <input
+            value={content.value}
+            type={content.type}
+            onChange={content.onChange}
+          />
         </div>
         <div>
-          author
-          <input {...author} />
+          Author
+          <input
+            value={author.value}
+            type={author.type}
+            onChange={author.onChange}
+          />
         </div>
         <div>
-          url for more info
-          <input {...info} />
+          Url for more info
+          <input value={info.value} type={info.type} onChange={info.onChange} />
         </div>
         <button type="submit">create</button>
         <button type="button" onClick={handleReset}>
