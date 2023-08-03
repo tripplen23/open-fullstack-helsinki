@@ -1,21 +1,22 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
 // Notifications
 import Notification from './components/Notification';
-import { useDispatch } from 'react-redux';
 import { createNotification } from './reducers/notificationReducer';
 
+// Blog
 import Blog from './components/Blog';
-import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
-import Togglable from './components/Togglable';
 import blogService from './services/blogs';
+
+import LoginForm from './components/LoginForm';
+import Togglable from './components/Togglable';
 import loginService from './services/login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
@@ -23,16 +24,6 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
-
-  // TODO: Clear notification after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMessage(null);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [message]);
 
   // TODO: The effect of when User login successfullly, the blogService will set a unique token for this user as well as set the user state of the app as this user logged in.
   useEffect(() => {
@@ -123,7 +114,7 @@ const App = () => {
     <div>
       <h1 className='header-title'>Blogs</h1>
       {/* Notifications */}
-      <Notification message={message} />
+      <Notification />
 
       {/* If there is no user logged in. */}
       {user === null ? (
