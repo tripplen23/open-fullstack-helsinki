@@ -1,9 +1,14 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+
+// Notifications
+import Notification from './components/Notification';
+import { useDispatch } from 'react-redux';
+import { createNotification } from './reducers/notificationReducer';
+
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
-import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -12,6 +17,8 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState(null);
   const [user, setUser] = useState(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -48,7 +55,9 @@ const App = () => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       setUser(user);
     } catch (exception) {
-      setMessage('Error login: ' + exception.response.data.error);
+      dispatch(
+        createNotification('Error login: ' + exception.response.data.error, 5)
+      );
     }
   };
 
@@ -62,9 +71,11 @@ const App = () => {
         url,
       });
       setBlogs(blogs.concat(blog));
-      setMessage(`A new blog ${title} by ${author} added`);
+      dispatch(createNotification(`A new blog ${title} by ${author} added`, 5));
     } catch (exception) {
-      setMessage('Error creating blog: ' + exception.message);
+      dispatch(
+        createNotification('Error creating blog: ' + exception.message, 5)
+      );
     }
   };
 
@@ -77,7 +88,12 @@ const App = () => {
       );
       setBlogs(newBlogs);
     } catch (exception) {
-      setMessage('Error update likes: ' + exception.response.data.error);
+      dispatch(
+        createNotification(
+          'Error update likes: ' + exception.response.data.error,
+          5
+        )
+      );
     }
   };
 
@@ -87,9 +103,9 @@ const App = () => {
       await blogService.remove(blogId);
       const updatedBlogs = blogs.filter((blog) => blog.id !== blogId);
       setBlogs(updatedBlogs);
-      setMessage('Blog removed');
+      dispatch(createNotification(`Blog ${blogId} is removed`, 5));
     } catch (exception) {
-      setMessage('error' + exception.response.data.error);
+      dispatch(createNotification('Error' + exception.response.data.error, 5));
     }
   };
 
