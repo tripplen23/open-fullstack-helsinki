@@ -1,56 +1,29 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Notifications
 import Notification from './components/Notification';
-import { createNotification } from './reducers/notificationReducer';
 
 // Blog
-import blogService from './services/blogs';
 import BlogList from './components/BlogList';
 
 // Login
 import LoginForm from './components/LoginForm';
-import loginService from './services/login';
+import LogoutButton from './components/LogoutButton';
+import { loggedUser } from './reducers/loginReducer';
+
+// User
+import { initializeUsers } from './reducers/userReducer';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.login);
 
-  // TODO: The effect of when User login successfullly, the blogService will set a unique token for this user as well as set the user state of the app as this user logged in.
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
-    }
-  }, []);
-
-  const handleLogin = async (username, password) => {
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      // TODO: For saving the user token into the app local storage -> The login session will be saved even after refreshing the app.
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
-      setUser(user);
-    } catch (exception) {
-      dispatch(
-        createNotification('Error login: ' + exception.response.data.error, 5)
-      );
-    }
-  };
-
-  // TODO: A way to log out the current session, this way is supposed to clear every session in the local storage. There is an another way is: window.localStorage.removeItem('loggedNoteappUser')
-  const handleLogout = () => {
-    window.localStorage.clear();
-    setUser(null); // Require User to login after they logged out.
-  };
+    dispatch(loggedUser());
+    dispatch(initializeUsers());
+  }, [dispatch]);
 
   return (
     <div>
@@ -60,15 +33,12 @@ const App = () => {
 
       {/* If there is no user logged in. */}
       {user === null ? (
-        <LoginForm handleLogin={handleLogin} />
+        <LoginForm />
       ) : (
         <div>
           <p>
             <span className='active-user'>{user.name} </span>
-            logged in{' '}
-            <button id='logout-btn' onClick={handleLogout}>
-              Logout
-            </button>
+            logged in <LogoutButton />
           </p>
           <BlogList />
         </div>

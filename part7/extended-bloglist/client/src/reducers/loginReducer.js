@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import loginService from '../services/login';
-import blogService from '../services/blog';
+import blogService from '../services/blogs';
 import { createNotification } from './notificationReducer';
 
 const loginSlice = createSlice({
@@ -53,14 +53,20 @@ export const handleLogin = (username, password) => {
 
 export const handleLogout = () => {
   return async (dispatch) => {
-    window.localStorage.clear();
-    dispatch(logout(null));
-    dispatch(
-      createNotification(
-        'You just logged out, login to explore the blog app!',
-        5
-      )
-    );
+    try {
+      window.localStorage.clear();
+      dispatch(logout(null));
+      dispatch(
+        createNotification(
+          'You just logged out, login to explore the blog app!',
+          5
+        )
+      );
+    } catch (error) {
+      dispatch(
+        createNotification(`Error logout: ${error.response.data.error}`, 5)
+      );
+    }
   };
 };
 
