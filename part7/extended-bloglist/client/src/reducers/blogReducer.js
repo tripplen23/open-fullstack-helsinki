@@ -49,4 +49,37 @@ export const createBlog = (blog) => {
   };
 };
 
+// TODO: Handle update like
+export const updateLikes = (id, blogToUpdate) => {
+  return async (dispatch) => {
+    try {
+      const updatedBlog = await blogService.update(id, blogToUpdate);
+      dispatch(updateBlog(updatedBlog));
+      dispatch(
+        createNotification(`Like ${blogToUpdate.title} successfully`, 5)
+      );
+    } catch (exception) {
+      dispatch(
+        createNotification(
+          'Error update likes: ' + exception.response.data.error,
+          5
+        )
+      );
+    }
+  };
+};
+
+//TODO: Handle the delete blog
+export const deleteBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      await blogService.remove(blog.id);
+      dispatch(removeBlog(blog.id));
+      dispatch(createNotification(`Blog ${blog.title} is removed`, 5));
+    } catch (exception) {
+      dispatch(createNotification('Error' + exception.response.data.error, 5));
+    }
+  };
+};
+
 export default blogSlice.reducer;

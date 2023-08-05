@@ -9,6 +9,10 @@ const Notification = () => {
     return <div className='error'>{message.substring(5)}</div>;
   }
 
+  if (message.includes('jwt expired')) {
+    return <div className='error'>{message}</div>;
+  }
+
   return <div className='success'>{message}</div>;
 };
 

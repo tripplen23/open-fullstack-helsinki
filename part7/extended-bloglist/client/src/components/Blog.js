@@ -1,8 +1,10 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateLikes, deleteBlog } from '../reducers/blogReducer';
 import { useState } from 'react';
 import blogService from '../services/blogs';
 
-const Blog = ({ blog, updateLikes, deleteBlog, username }) => {
+const Blog = ({ blog, username }) => {
   // Style the blog
   const blogStyle = {
     paddingTop: 10,
@@ -19,6 +21,8 @@ const Blog = ({ blog, updateLikes, deleteBlog, username }) => {
     setVisible(!visible);
   };
 
+  const dispatch = useDispatch();
+
   const handleLike = () => {
     const blogToUpdate = {
       title: blog.title,
@@ -26,13 +30,13 @@ const Blog = ({ blog, updateLikes, deleteBlog, username }) => {
       url: blog.url,
       likes: blog.likes + 1,
     };
-    updateLikes(blog.id, blogToUpdate);
+    dispatch(updateLikes(blog.id, blogToUpdate));
   };
 
   const handleDelete = () => {
     // Confirmation dialog for deleting
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      deleteBlog(blog.id);
+      dispatch(deleteBlog(blog));
     }
   };
 
