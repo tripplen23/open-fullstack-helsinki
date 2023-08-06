@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
 
 // Notifications
 import Notification from './components/Notification';
@@ -13,8 +14,8 @@ import LoginForm from './components/LoginForm';
 import LogoutButton from './components/LogoutButton';
 import { loggedUser } from './reducers/loginReducer';
 
-// User
-import { initializeUsers } from './reducers/userReducer';
+// Users
+import Users from './components/Users';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,6 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loggedUser());
-    dispatch(initializeUsers());
   }, [dispatch]);
 
   return (
@@ -40,6 +40,9 @@ const App = () => {
             <span className='active-user'>{user.name} </span>
             logged in <LogoutButton />
           </p>
+          <Routes>
+            <Route path='/users' element={<Users />} />
+          </Routes>
           <BlogList />
         </div>
       )}
