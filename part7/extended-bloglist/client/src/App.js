@@ -15,7 +15,9 @@ import LogoutButton from './components/LogoutButton';
 import { loggedUser } from './reducers/loginReducer';
 
 // Users
-import Users from './components/Users';
+import UserList from './components/UserList';
+import User from './components/User';
+import { initializeUsers } from './reducers/userReducer';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loggedUser());
+    dispatch(initializeUsers());
   }, [dispatch]);
 
   return (
@@ -41,7 +44,8 @@ const App = () => {
             logged in <LogoutButton />
           </div>
           <Routes>
-            <Route path='/users' element={<Users />} />
+            <Route path='/users' element={<UserList />} />
+            <Route path='/users/:id' element={<User />} />
             <Route path='/blogs' element={<BlogList />} />
           </Routes>
         </div>
