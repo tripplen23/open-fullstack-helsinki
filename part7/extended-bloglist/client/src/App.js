@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Container, Button } from '@mui/material';
 
 // Notifications
 import Notification from './components/Notification';
@@ -32,7 +33,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <Container>
       <h1 className='header-title'>Blogs App</h1>
       {/* Notifications */}
       <Notification />
@@ -43,18 +44,34 @@ const App = () => {
       ) : (
         <div>
           <div>
+            <Button component={Link} to='/'>
+              Home
+            </Button>
+            <Button component={Link} to='/blogs'>
+              Blogs
+            </Button>
+            <Button component={Link} to='/users'>
+              Users
+            </Button>
             <span className='active-user'>{user.name} </span>
             logged in <LogoutButton />
           </div>
+
           <Routes>
-            <Route path='/users' element={<UserList />} />
+            <Route
+              path='/users'
+              element={user ? <UserList /> : <Navigate replace to='/login' />}
+            />
             <Route path='/users/:id' element={<User />} />
-            <Route path='/blogs' element={<BlogList />} />
+            <Route
+              path='/blogs'
+              element={user ? <BlogList /> : <Navigate replace to='/login' />}
+            />
             <Route path='/blogs/:id' element={<Blog user={user} />} />
           </Routes>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 
