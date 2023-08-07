@@ -36,14 +36,14 @@ const App = () => {
         <LoginForm />
       ) : (
         <div>
-          <p>
+          <div>
             <span className='active-user'>{user.name} </span>
             logged in <LogoutButton />
-          </p>
+          </div>
           <Routes>
             <Route path='/users' element={<Users />} />
+            <Route path='/blogs' element={<BlogList />} />
           </Routes>
-          <BlogList />
         </div>
       )}
     </div>
