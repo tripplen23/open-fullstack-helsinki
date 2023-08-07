@@ -8,6 +8,8 @@ import Notification from './components/Notification';
 
 // Blog
 import BlogList from './components/BlogList';
+import Blog from './components/Blog';
+import { initializeBlogs } from './reducers/blogReducer';
 
 // Login
 import LoginForm from './components/LoginForm';
@@ -26,6 +28,7 @@ const App = () => {
   useEffect(() => {
     dispatch(loggedUser());
     dispatch(initializeUsers());
+    dispatch(initializeBlogs());
   }, [dispatch]);
 
   return (
@@ -47,6 +50,7 @@ const App = () => {
             <Route path='/users' element={<UserList />} />
             <Route path='/users/:id' element={<User />} />
             <Route path='/blogs' element={<BlogList />} />
+            <Route path='/blogs/:id' element={<Blog user={user} />} />
           </Routes>
         </div>
       )}

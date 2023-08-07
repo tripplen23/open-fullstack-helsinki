@@ -14,7 +14,7 @@ const UserList = () => {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h2>User List</h2>
       <Users users={users} />
     </div>
   );

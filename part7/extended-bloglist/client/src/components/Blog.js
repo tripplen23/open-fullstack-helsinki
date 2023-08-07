@@ -1,10 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateLikes, deleteBlog } from '../reducers/blogReducer';
-import { useState } from 'react';
 import blogService from '../services/blogs';
+import { useParams } from 'react-router-dom';
 
-const Blog = ({ blog, username }) => {
+const Blog = ({ user }) => {
+  const id = useParams().id;
+  const blogs = useSelector((state) => state.blogs);
+  const blog = blogs.find((b) => b.id === id);
+
   // Style the blog
   const blogStyle = {
     paddingTop: 10,
@@ -13,13 +17,8 @@ const Blog = ({ blog, username }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
-  const [visible, setVisible] = useState(false);
 
   const userId = blogService.getUserId();
-
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
 
   const dispatch = useDispatch();
 
@@ -40,35 +39,28 @@ const Blog = ({ blog, username }) => {
     }
   };
 
-  return (
-    <div className='blog' style={blogStyle}>
-      <div>
-        <span className='title'>{blog.title} - </span>
-        <span className='author'>{blog.author}</span>
-        <button id='view-btn' onClick={toggleVisibility}>
-          {visible ? 'hide' : 'show'}
-        </button>
-      </div>
+  if (!blog) {
+    return <div>Blog not found</div>;
+  }
 
-      {/* Children prop */}
-      {visible && (
-        <div className='blog-details'>
-          <div>{blog.url}</div>
-          <div>
-            likes: {blog.likes}{' '}
-            <button id='like-btn' onClick={handleLike}>
-              like
-            </button>{' '}
-          </div>
-          {/* 5.8 Indicating the User information */}
-          <div>UserID: {userId}</div>
-          <div>UserName: {username}</div>
-          {blog.user === userId && blog.user.username === username && (
-            <button id='delete-btn' onClick={handleDelete}>
-              Delete
-            </button>
-          )}
-        </div>
+  return (
+    <div className='blog-details' style={blogStyle}>
+      <div>Blog title: {blog.title}</div>
+      <div>Author: {blog.author}</div>
+      <div>Url: {blog.url}</div>
+      <div>
+        likes: {blog.likes}{' '}
+        <button id='like-btn' onClick={handleLike}>
+          like
+        </button>{' '}
+      </div>
+      {/* 5.8 Indicating the User information */}
+      <div>UserID: {userId}</div>
+      <div>UserName: {user.name}</div>
+      {blog.user.id === userId && (
+        <button id='delete-btn' onClick={handleDelete}>
+          Delete
+        </button>
       )}
     </div>
   );
