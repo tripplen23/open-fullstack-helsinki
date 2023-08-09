@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateLikes, deleteBlog } from '../reducers/blogReducer';
 import blogService from '../services/blogs';
 import { useParams } from 'react-router-dom';
+import Comments from './Comments';
 
 const Blog = ({ user }) => {
   const id = useParams().id;
@@ -62,6 +63,9 @@ const Blog = ({ user }) => {
           Delete
         </button>
       )}
+      <div>
+        <Comments blog={blog} />
+      </div>
     </div>
   );
 };

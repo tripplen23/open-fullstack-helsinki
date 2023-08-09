@@ -82,4 +82,17 @@ export const deleteBlog = (blog) => {
   };
 };
 
+//TODO: Handle post a comment
+export const postComment = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentToBlog = await blogService.addComment(id, { comment });
+      dispatch(updateBlog(commentToBlog));
+      dispatch(createNotification(`Comment ${comment} was posted`, 5));
+    } catch (exception) {
+      dispatch(createNotification('Error' + exception.response.data.error, 5));
+    }
+  };
+};
+
 export default blogSlice.reducer;
