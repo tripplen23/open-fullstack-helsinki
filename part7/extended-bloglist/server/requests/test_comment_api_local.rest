@@ -1,0 +1,12 @@
+GET http://localhost:3003/api/blogs/64a562ec600ba7d7ee5b4636/comments
+
+###
+
+POST http://localhost:3003/api/blogs/64a562ec600ba7d7ee5b4636/comments
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJpbmhmbmVmIiwiaWQiOiI2NGNiNWFhM2EzYzRhNmY1MDVhNTMyODMiLCJpYXQiOjE2OTE1NzUxMzUsImV4cCI6MTY5MTU3ODczNX0.9kST81GRz99CHfGB0_qsQX6IGdsT_MoE8pF_h9115Kg
+
+{
+  "comment": "Comment for fun! abcxyz"
+}
+
