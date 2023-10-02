@@ -148,8 +148,9 @@ const resolvers = {
         const byAuthor = (book) =>
           args.author === book.author ? book.author : !book.author;
         return books.filter(byAuthor);
-        // TODO: Otherwise, when we query allBooks without any argument.
-      } else {
+      }
+      // TODO: Otherwise, when we query allBooks without any argument.
+      else {
         return books;
       }
     },
