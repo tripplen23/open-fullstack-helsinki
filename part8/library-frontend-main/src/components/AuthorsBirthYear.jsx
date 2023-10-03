@@ -1,8 +1,7 @@
-import React from "react";
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
-
-import { EDIT_AUTHOR } from "../queries.js";
+import React, { useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { EDIT_AUTHOR, ALL_AUTHORS } from "../queries.js";
+import Select from "react-select";
 
 const AuthorsBirthYear = () => {
   const [name, setName] = useState("");
@@ -18,15 +17,29 @@ const AuthorsBirthYear = () => {
     setBorn("");
   };
 
+  const { loading, error, data } = useQuery(ALL_AUTHORS);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+
+  const options = data.allAuthors.map((author) => ({
+    value: author.name,
+    label: author.name,
+  }));
+  const handleSelectChange = (selectedOption) => {
+    setName(selectedOption.value);
+  };
+
   return (
     <div>
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
         <div>
           name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
+          <Select
+            value={{ value: name, label: name }}
+            onChange={handleSelectChange}
+            options={options}
           />
         </div>
         <div>
