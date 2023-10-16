@@ -61,28 +61,40 @@ const resolvers = {
     allBooks: async (root, args) => {
       // TODO: If we query both genre and authors as the arguments
       if (args.author && args.genre) {
-        return Book.filter(
-          (book) =>
-            book.author === args.author && book.genres.includes(args.genre)
-        );
+        const author = await Author.findOne({ name: args.author });
+
+        const books = await Book.find({
+          $and: [
+            { author: { $in: author.id } },
+            { genres: { $in: args.genre } },
+          ],
+        }).populate("author");
+
+        return books;
       }
 
       // TODO: If we only query the book genre
       if (args.genre) {
-        const byGenre = (book) => book.genres.includes(args.genre);
-        return Book.filter(byGenre);
+        const books = await Book.find({
+          genres: { $in: args.genre },
+        }).populate("author");
+
+        return books;
       }
 
       // TODO: If we only query the book author
       if (args.author) {
-        const byAuthor = (book) =>
-          args.author === book.author ? book.author : !book.author;
-        return Book.filter(byAuthor);
+        const author = await Author.findOne({ name: args.author });
+        const books = await Book.find({
+          author: { $in: author.id },
+        }).populate("author");
+
+        return books;
       }
 
       // TODO: Otherwise, when we query allBooks without any argument.
       else {
-        return Book.find({});
+        return await Book.find({}).populate("author");
       }
     },
 
@@ -91,8 +103,8 @@ const resolvers = {
     },
   },
   Author: {
-    bookCount: (root) =>
-      Book.filter((book) => book.author === root.name).length,
+    bookCount: async (root) =>
+      await Book.find({ author: root.id }).countDocuments(),
   },
 
   Mutation: {
@@ -107,7 +119,7 @@ const resolvers = {
           },
         });
       }
-*/
+      */
       // TODO: Save a new author in case he/she is new to the database.
       let author = await Author.findOne({ name: args.author });
 
@@ -121,16 +133,19 @@ const resolvers = {
       return book.save();
     },
 
-    editAuthor: (root, args) => {
-      const author = authors.find((author) => author.name === args.name);
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name });
+
       if (!author) {
         return null;
       }
 
-      const updatedAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((author) =>
-        author.name === args.name ? updatedAuthor : author
+      const updatedAuthor = await Author.findOneAndUpdate(
+        { name: args.name },
+        { born: args.setBornTo },
+        { new: true }
       );
+
       return updatedAuthor;
     },
   },
