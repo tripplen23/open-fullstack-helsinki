@@ -1,4 +1,4 @@
-const { ApolloServer } = require("@apollo/server");
+const { ApolloServer, UserInputError } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
 const mongoose = require("mongoose");
@@ -112,12 +112,7 @@ const resolvers = {
       /*
       // TODO: Book title should be unique
       if (books.find((book) => book.title === args.title)) {
-        throw new GraphQLError("Book title must be unique.", {
-          extensions: {
-            code: "BAD_USER_INPUT",
-            invalidArgs: args.title,
-          },
-        });
+        
       }
       */
       // TODO: Save a new author in case he/she is new to the database.
@@ -125,12 +120,37 @@ const resolvers = {
 
       if (!author) {
         author = new Author({ name: args.author });
-        await author.save();
+        try {
+          await author.save();
+        } catch (error) {
+          throw new GraphQLError(
+            "Author's name should be longer than 4 characters",
+            {
+              extensions: {
+                code: "BAD_USER_INPUT",
+                invalidArgs: args.author,
+                error,
+              },
+            }
+          );
+        }
       }
 
       // TODO: Add a new book
-      const book = new Book({ ...args, author: author.id });
-      return book.save();
+      else {
+        const book = new Book({ ...args, author: author.id });
+
+        try {
+          await book.save();
+        } catch (error) {
+          throw new GraphQLError(error.message, {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.title,
+            },
+          });
+        }
+      }
     },
 
     editAuthor: async (root, args) => {
