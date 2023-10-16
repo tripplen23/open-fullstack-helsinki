@@ -163,16 +163,13 @@ const resolvers = {
         try {
           await author.save();
         } catch (error) {
-          throw new GraphQLError(
-            "Author's name should be longer than 4 characters",
-            {
-              extensions: {
-                code: "BAD_USER_INPUT",
-                invalidArgs: args.author,
-                error,
-              },
-            }
-          );
+          throw new GraphQLError(error.message, {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.author,
+              error,
+            },
+          });
         }
       }
 
