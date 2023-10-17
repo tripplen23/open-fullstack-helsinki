@@ -3,11 +3,20 @@ import { useMutation, useQuery } from "@apollo/client";
 import { EDIT_AUTHOR, ALL_AUTHORS } from "../queries.js";
 import Select from "react-select";
 
-const AuthorsBirthYear = () => {
+const AuthorsBirthYear = ({ setError }) => {
   const [name, setName] = useState("");
   const [born, setBorn] = useState("");
+  const { loading, data } = useQuery(ALL_AUTHORS);
 
-  const [changeBorn] = useMutation(EDIT_AUTHOR);
+  // Catching error
+  const [changeBorn] = useMutation(EDIT_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      error.graphQLErrors > 0
+        ? setError(error.graphQLErrors[0].message)
+        : setError(error.message);
+    },
+  });
 
   const submit = (event) => {
     event.preventDefault();
@@ -17,10 +26,7 @@ const AuthorsBirthYear = () => {
     setBorn("");
   };
 
-  const { loading, error, data } = useQuery(ALL_AUTHORS);
-
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
 
   const options = data.allAuthors.map((author) => ({
     value: author.name,
