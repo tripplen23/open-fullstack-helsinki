@@ -5,6 +5,7 @@ import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import Notify from "./components/Notify";
 import { useApolloClient } from "@apollo/client";
+import Recommend from "./components/Recommend";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -29,6 +30,14 @@ const App = () => {
     client.resetStore();
   };
 
+  // TODO: Get user token from storage
+  useEffect(() => {
+    const userFromStorage = localStorage.getItem("library-user-token");
+    if (userFromStorage) {
+      setToken(userFromStorage);
+    }
+  }, []);
+
   return (
     <div>
       <div>
@@ -38,6 +47,7 @@ const App = () => {
         {token ? (
           <span>
             <button onClick={() => setPage("add")}>add book</button>
+            <button onClick={() => setPage("recommend")}>recommend</button>
             <button onClick={logout}>Logout</button>
           </span>
         ) : (
@@ -58,6 +68,8 @@ const App = () => {
       <Books show={page === "books"} />
 
       <NewBook show={page === "add"} setError={setErrorMessage} />
+
+      <Recommend show={page === "recommend"} />
     </div>
   );
 };
