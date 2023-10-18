@@ -1,27 +1,58 @@
 import { useState, useEffect } from "react";
+
+import { useApolloClient, useSubscription } from "@apollo/client";
+
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/LoginForm";
 import Notify from "./components/Notify";
-import { useApolloClient } from "@apollo/client";
 import Recommend from "./components/Recommend";
+
+import { ALL_BOOKS, BOOK_ADDED } from "./queries";
+
+// TODO: Function that takes care of manipulating cache
+export const updateCache = (cache, query, addedBook) => {
+  // Helper that is used to eliminate saving same book twice
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.name;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    };
+  });
+};
 
 const App = () => {
   const [page, setPage] = useState("authors");
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
   const [token, setToken] = useState(null);
   const client = useApolloClient();
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded;
+      setMessage(`${addedBook.title} added`);
+
+      updateCache(client.cache, { query: ALL_BOOKS }, addedBook);
+    },
+  });
 
   // TODO: Set time out for error message
   useEffect(() => {
     const timer = setTimeout(() => {
-      setErrorMessage(null);
+      setMessage(null);
     }, 5000);
     return () => {
       clearTimeout(timer);
     };
-  }, [errorMessage]);
+  }, [message]);
 
   // TODO: Logout
   const logout = () => {
@@ -54,20 +85,20 @@ const App = () => {
           <button onClick={() => setPage("login")}>Login</button>
         )}
       </div>
-      <Notify errorMessage={errorMessage} />
+      <Notify message={message} />
 
       <LoginForm
         show={page === "login"}
         setToken={setToken}
-        setError={setErrorMessage}
+        setError={setMessage}
         setPage={setPage}
       />
 
-      <Authors show={page === "authors"} setError={setErrorMessage} />
+      <Authors show={page === "authors"} setError={setMessage} />
 
       <Books show={page === "books"} />
 
-      <NewBook show={page === "add"} setError={setErrorMessage} />
+      <NewBook show={page === "add"} setError={setMessage} />
 
       <Recommend show={page === "recommend"} />
     </div>
