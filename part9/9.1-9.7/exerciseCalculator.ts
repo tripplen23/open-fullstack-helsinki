@@ -16,6 +16,7 @@ const parseArgumentsExercise = (args: Array<string>): exerciseValues => {
     !isNaN(Number(arg)) ? Number(arg) : null
   );
 
+  // remove the position of the target argument and return it
   const target = validArgs.shift();
 
   const dailyExerciseHours = validArgs;
