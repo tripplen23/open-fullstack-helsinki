@@ -1,3 +1,28 @@
+// TODO: the type of returned value of parseArgument function
+interface bmiValues {
+  height: number;
+  weight: number;
+}
+
+// TODO: Ensures that the parameters given to calculateBmi are of right type
+const parseArgumentsBmi = (args: string[]): bmiValues => {
+  if (args.length === 2)
+    throw new Error(
+      "Please provide the height and weight need to be calculated accordingly in number type"
+    );
+  if (args.length < 4) throw new Error("Not enough arguments");
+  if (args.length > 4) throw new Error("Too many arguments");
+
+  if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+    return {
+      height: Number(args[2]),
+      weight: Number(args[3]),
+    };
+  } else {
+    throw new Error("One of or both provided values were not numbers");
+  }
+};
+
 // TODO: bmi Calculator
 const calculateBmi = (height: number, weight: number): string => {
   let heightInMeters = height / 100;
@@ -21,11 +46,15 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-console.log(calculateBmi(180, 74));
-/*
-
-const height: number = Number(process.argv[2]);
-const weight: number = Number(process.argv[3]);
-
-calculateBmi(height, weight, "");
-*/
+// TODO: Print result, otherwise print errors
+try {
+  const { height, weight } = parseArgumentsBmi(process.argv);
+  const result = calculateBmi(height, weight);
+  console.log(result);
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}

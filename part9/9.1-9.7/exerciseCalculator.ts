@@ -1,3 +1,35 @@
+// TODO: the type of returned value of parseArgument function
+interface exerciseValues {
+  dailyExerciseHours: number[];
+  target: number;
+}
+
+// TODO: Ensures that the parameters given to exerciseCalculator are of right type
+const parseArgumentsExercise = (args: Array<string>): exerciseValues => {
+  if (args.length < 4) throw new Error("Not enough arguments");
+
+  const exerciseValues = args.slice(2);
+
+  const notValid = exerciseValues.some((arg) => isNaN(Number(arg)));
+
+  const validArgs = exerciseValues.map((arg) =>
+    !isNaN(Number(arg)) ? Number(arg) : null
+  );
+
+  const target = validArgs.shift();
+
+  const dailyExerciseHours = validArgs;
+
+  if (!notValid) {
+    return {
+      dailyExerciseHours,
+      target,
+    };
+  } else {
+    throw new Error("Provided values were not numbers!");
+  }
+};
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -9,12 +41,12 @@ interface Result {
 }
 
 const exerciseCalculator = (
-  dailyExerciseHour: number[],
+  dailyExerciseHours: number[],
   target: number
 ): Result => {
-  const periodLength = dailyExerciseHour.length;
-  const trainingDays = dailyExerciseHour.filter((hour) => hour > 0).length;
-  const average = dailyExerciseHour.reduce((a, b) => a + b, 0) / periodLength;
+  const periodLength = dailyExerciseHours.length;
+  const trainingDays = dailyExerciseHours.filter((hour) => hour > 0).length;
+  const average = dailyExerciseHours.reduce((a, b) => a + b, 0) / periodLength;
   const success = average >= target;
 
   const getRating = (average: number, target: number): number => {
@@ -27,6 +59,8 @@ const exerciseCalculator = (
     }
   };
 
+  const rating = getRating(average, target);
+
   const getRatingDescription = (rating: number): string => {
     if (rating === 1) {
       return "Did not meet the target, keep doing better.";
@@ -37,7 +71,6 @@ const exerciseCalculator = (
     }
   };
 
-  const rating = getRating(average, target);
   const ratingDescription = getRatingDescription(rating);
 
   return {
@@ -51,4 +84,14 @@ const exerciseCalculator = (
   };
 };
 
-console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
+// TODO: Print result, otherwise print errors
+try {
+  const { dailyExerciseHours, target } = parseArgumentsExercise(process.argv);
+  console.log(exerciseCalculator(dailyExerciseHours, target));
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
+  }
+  console.log(errorMessage);
+}
