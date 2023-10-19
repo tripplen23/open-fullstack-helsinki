@@ -16,10 +16,13 @@ const parseArgumentsExercise = (args: Array<string>): exerciseValues => {
     !isNaN(Number(arg)) ? Number(arg) : null
   );
 
-  // remove the position of the target argument and return it
-  const target = validArgs.shift();
+  // remove the null value from validArgs
+  const dailyExerciseHours = validArgs.filter(
+    (arg) => arg !== null
+  ) as number[];
 
-  const dailyExerciseHours = validArgs;
+  // remove the position of the target argument and return it
+  const target = validArgs.shift() as number;
 
   if (!notValid) {
     return {
@@ -55,7 +58,7 @@ const exerciseCalculator = (
       return 1;
     } else if (average < target) {
       return 2;
-    } else if (average > target) {
+    } else {
       return 3;
     }
   };
@@ -67,7 +70,7 @@ const exerciseCalculator = (
       return "Did not meet the target, keep doing better.";
     } else if (rating === 2) {
       return "Not too bad but could be better.";
-    } else if (rating === 3) {
+    } else {
       return "Good work. Keep it up!";
     }
   };
