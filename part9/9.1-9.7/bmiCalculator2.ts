@@ -1,6 +1,6 @@
 export const calculateBmi2 = (height: number, weight: number): string => {
-  let heightInMeters = height / 100;
-  let bmi = weight / (heightInMeters * heightInMeters);
+  const heightInMeters = height / 100;
+  const bmi = weight / (heightInMeters * heightInMeters);
   if (bmi < 16.0) {
     return "Underweight - Severe thinness";
   } else if (bmi >= 16.0 && bmi <= 16.9) {
