@@ -26,13 +26,17 @@ const App = () => {
     <div className="App">
       <Router>
         <Container>
+          {/* Header */}
           <Typography variant="h3" style={{ marginBottom: "0.5em" }}>
             Patientor
           </Typography>
+          {/* Home button */}
           <Button component={Link} to="/" variant="contained" color="primary">
             Home
           </Button>
+
           <Divider hidden />
+
           <Routes>
             <Route
               path="/"
