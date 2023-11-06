@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const diagnoseService_1 = __importDefault(require("../services/diagnoseService"));
-const router = express_1.default.Router();
-router.get("/", (_req, res) => {
+const diagnoseRouter = express_1.default.Router();
+diagnoseRouter.get("/", (_req, res) => {
     res.send(diagnoseService_1.default.getDiagnoses());
 });
-router.post("/", (_req, res) => {
+diagnoseRouter.post("/", (_req, res) => {
     res.send("Will be modified to save a new diagnosic");
 });
-exports.default = router;
+exports.default = diagnoseRouter;

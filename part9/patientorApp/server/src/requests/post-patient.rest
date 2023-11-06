@@ -2,8 +2,9 @@ POST http://localhost:3001/api/patients
 Content-Type: application/json
 
 {
-  "date": "2023-5-12",
-  "weather": "stormy",
-  "visibility": "Trippy",
-  "comment": "Good deal" 
+  "name": "Binh Nguyen",
+  "dateOfBirth": "2000-23-03",
+  "ssn": "123456-7cn",
+  "gender": "male" ,
+  "occupation": "student"
 }

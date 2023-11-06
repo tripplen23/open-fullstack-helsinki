@@ -5,11 +5,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const patientService_1 = __importDefault(require("../services/patientService"));
-const router = express_1.default.Router();
-router.get("/", (_req, res) => {
-    res.send(patientService_1.default.getPatient());
+const patientRouter = express_1.default.Router();
+patientRouter.get("/", (_req, res) => {
+    res.send(patientService_1.default.getNonSensitivePatientData());
 });
-router.post("/", (_req, res) => {
-    res.send("Will be modified to save a new patient");
+patientRouter.get("/:id", (req, res) => {
+    const patient = patientService_1.default.findPatientById(String(req.params.id));
+    if (patient) {
+        res.send(patient);
+    }
+    else {
+        res.sendStatus(404);
+    }
 });
-exports.default = router;
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+patientRouter.post("/", (req, res) => {
+    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+    const addedPatient = patientService_1.default.addPatient(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    name, dateOfBirth, ssn, gender, occupation);
+    res.json(addedPatient);
+});
+exports.default = patientRouter;

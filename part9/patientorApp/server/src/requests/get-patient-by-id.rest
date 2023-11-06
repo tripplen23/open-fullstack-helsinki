@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/patients/d2773c6e-f723-11e9-8f0b-362b9e155667
+GET http://localhost:3001/api/patients/7d7b2b10-7c3c-11ee-80d3-b16e8e1d43a1

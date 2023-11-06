@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const diagnoses_1 = __importDefault(require("./routes/diagnoses"));
+const patient_1 = __importDefault(require("./routes/patient"));
 const app = (0, express_1.default)();
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use((0, cors_1.default)());
@@ -16,6 +17,7 @@ app.get("/api/ping", (_req, res) => {
     res.send("pong");
 });
 app.use("/api/diagnoses", diagnoses_1.default);
+app.use("/api/patients", patient_1.default);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
