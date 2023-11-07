@@ -50,16 +50,6 @@ const App = () => {
       return; // Prevent submission on validation error
     }
 
-    if (!newEntry.date) {
-      setErrorMessage("Error: Date is required.");
-      return; // Prevent submission on validation error
-    }
-
-    if (!newEntry.comment) {
-      setErrorMessage("Error: Comment is required.");
-      return; // Prevent submission on validation error
-    }
-
     createDiaryEntry(newEntry)
       .then(() => {
         loadDiaryEntries();
@@ -86,29 +76,92 @@ const App = () => {
           <div>
             <label>Date:</label>
             <input
-              type="text"
+              type="date"
               name="date"
               value={newEntry.date}
               onChange={handleInputChange}
             />
           </div>
+          {/* Visibility */}
           <div>
             <label>Visibility:</label>
             <input
-              type="text"
+              type="radio"
               name="visibility"
-              value={newEntry.visibility}
+              value={Visibility.Great}
+              checked={newEntry.visibility === Visibility.Great}
               onChange={handleInputChange}
             />
+            <label>Great</label>{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value={Visibility.Good}
+              checked={newEntry.visibility === Visibility.Good}
+              onChange={handleInputChange}
+            />
+            <label>Good</label>{" "}
+            <input
+              type="radio"
+              name="visibility"
+              value={Visibility.Ok}
+              checked={newEntry.visibility === Visibility.Ok}
+              onChange={handleInputChange}
+            />
+            <label>Ok</label>
+            <input
+              type="radio"
+              name="visibility"
+              value={Visibility.Poor}
+              checked={newEntry.visibility === Visibility.Poor}
+              onChange={handleInputChange}
+            />
+            <label>Poor</label>
           </div>
+
+          {/* Weather */}
           <div>
             <label>Weather:</label>
             <input
-              type="text"
+              type="radio"
               name="weather"
-              value={newEntry.weather}
+              value={Weather.Sunny}
+              checked={newEntry.weather === Weather.Sunny}
               onChange={handleInputChange}
             />
+            <label>Sunny</label>{" "}
+            <input
+              type="radio"
+              name="weather"
+              value={Weather.Cloudy}
+              checked={newEntry.weather === Weather.Cloudy}
+              onChange={handleInputChange}
+            />
+            <label>Cloudy</label>{" "}
+            <input
+              type="radio"
+              name="weather"
+              value={Weather.Rainy}
+              checked={newEntry.weather === Weather.Rainy}
+              onChange={handleInputChange}
+            />
+            <label>Rainy</label>{" "}
+            <input
+              type="radio"
+              name="weather"
+              value={Weather.Stormy}
+              checked={newEntry.weather === Weather.Stormy}
+              onChange={handleInputChange}
+            />
+            <label>Stormy</label>{" "}
+            <input
+              type="radio"
+              name="weather"
+              value={Weather.Windy}
+              checked={newEntry.weather === Weather.Windy}
+              onChange={handleInputChange}
+            />
+            <label>Windy</label>{" "}
           </div>
           <div>
             <label>Comment:</label>
