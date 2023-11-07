@@ -9,6 +9,6 @@ export const getAllDiaryEntries = () => {
 
 export const createDiaryEntry = (object: NewDiaryEntry) => {
   return axios
-    .post<DiaryEntry>(baseUrl, object)
+    .post<NewDiaryEntry>(baseUrl, object)
     .then((response) => response.data);
 };

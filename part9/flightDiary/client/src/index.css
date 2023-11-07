@@ -1,0 +1,7 @@
+.notification.visible {
+  display: block; /* Display the notification when it's visible */
+}
+
+.notification.hidden {
+  display: none; /* Hide the notification when it's hidden */
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { DiaryEntry } from "../types";
 import { getAllDiaryEntries } from "../diaryService";
 
-function DiaryEntries() {
+const DiaryEntries = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[] | null>(null);
 
   useEffect(() => {
@@ -33,6 +33,6 @@ function DiaryEntries() {
       </div>
     </div>
   );
-}
+};
 
 export default DiaryEntries;
