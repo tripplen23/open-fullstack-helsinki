@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/diaries
+Content-Type: application/json
+
+{
+  "date": "2023-5-12",
+  "weather": "stormy",
+  "visibility": "Trippy",
+  "comment": "Good deal" 
+}
