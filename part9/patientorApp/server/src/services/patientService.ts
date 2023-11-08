@@ -18,12 +18,27 @@ const getNonSensitivePatientData = (): Array<NonSensitivePatient> => {
 
 const findPatientById = (id: string): Patient | undefined => {
   const patient = patientsData.find((p) => p.id === id);
-  return patient;
+
+  if (patient) {
+    // TODO: Modify the patient data to include the "entries" field
+    const patientWithEntries: Patient = {
+      ...patient,
+      entries: patient.entries || [], // Initialize entries as an empty array if it's missing
+    };
+    return patientWithEntries;
+  }
+
+  return undefined;
 };
 
 const addPatient = (patient: NewPatient): Patient => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const newPatient = { id: uuid(), ...patient };
+  // Create a new patient with an empty entries array
+  const newPatient: Patient = {
+    id: uuid(),
+    ...patient,
+    entries: [],
+  };
+
   patientsData.push(newPatient);
   return newPatient;
 };
