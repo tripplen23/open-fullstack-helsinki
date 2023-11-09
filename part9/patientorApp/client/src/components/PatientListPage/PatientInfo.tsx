@@ -30,7 +30,26 @@ const PatientInfo = () => {
         {patient.gender === "male" && <MaleIcon></MaleIcon>}
       </h1>
       <p>ssn: {patient.ssn}</p>
-      <p>occupation: {patient.occupation}</p>
+      <p>
+        occupation: {patient.occupation}
+        <br />
+        <br />
+      </p>
+
+      <h2>entries</h2>
+      <p>
+        {" "}
+        {patient.entries.map((e) => (
+          <div key={e.id}>
+            {e.date} <em>{e.description}</em>
+            <ul>
+              {e.diagnosisCodes?.map((dianosisCode) => (
+                <li key={dianosisCode}>{dianosisCode}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </p>
     </div>
   );
 };
